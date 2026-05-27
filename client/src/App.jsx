@@ -1,14 +1,16 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
-import HomePage from "./pages/HomePage/HomePage";
+import HomePage    from "./pages/HomePage/HomePage";
+import ExploraPage from "./pages/ExploraPage/ExploraPage";
+import Species     from "./pages/SpeciesPage/Species";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import SignupPage from "./pages/SignupPage/SignupPage";
-import LoginPage from "./pages/LoginPage/LoginPage";
+import SignupPage  from "./pages/SignupPage/SignupPage";
+import LoginPage   from "./pages/LoginPage/LoginPage";
 
-import Navbar from "./components/Navbar/Navbar";
+import Navbar    from "./components/Navbar/Navbar";
 import IsPrivate from "./components/IsPrivate/IsPrivate";
-import IsAnon from "./components/IsAnon/IsAnon";
+import IsAnon    from "./components/IsAnon/IsAnon";
 
 function App() {
   return (
@@ -16,8 +18,14 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        {/* Páginas principales */}
+        <Route path="/"         element={<HomePage />} />
+        <Route path="/explorar" element={<ExploraPage />} />
 
+        {/* Detalle de especie: /species/azure-kingfisher/detalles */}
+        <Route path="/species/:nombreDelAve/detalles" element={<Species />} />
+
+        {/* Rutas protegidas */}
         <Route
           path="/profile"
           element={
@@ -27,6 +35,7 @@ function App() {
           }
         />
 
+        {/* Rutas anónimas */}
         <Route
           path="/signup"
           element={
