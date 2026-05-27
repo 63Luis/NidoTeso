@@ -92,12 +92,11 @@ export default function Navbar() {
           <nav className="desktop-nav" style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             <a href="/"         className="nav-link-item active">Inicio</a>
             <a href="/explorar" className="nav-link-item">Explorar</a>
-            <a href="/impacto"  className="nav-link-item">Impacto</a>
+            <a href="/conservacion"  className="nav-link-item">Conservación</a>
           </nav>
 
           {/* Right side */}
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <span style={{ fontSize: "20px", cursor: "pointer" }}>👤</span>
             <button
               className="menu-toggle"
               onClick={() => setMenuOpen(!menuOpen)}

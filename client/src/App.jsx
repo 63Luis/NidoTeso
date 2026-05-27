@@ -11,6 +11,7 @@ import LoginPage   from "./pages/LoginPage/LoginPage";
 import Navbar    from "./components/Navbar/Navbar";
 import IsPrivate from "./components/IsPrivate/IsPrivate";
 import IsAnon    from "./components/IsAnon/IsAnon";
+import ConservationPage from "./pages/ConservationPage/ConservationPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         {/* Páginas principales */}
         <Route path="/"         element={<HomePage />} />
         <Route path="/explorar" element={<ExploraPage />} />
+        <Route path="/conservacion" element={<ConservationPage />} />
 
         {/* Detalle de especie: /species/azure-kingfisher/detalles */}
         <Route path="/species/:nombreDelAve/detalles" element={<Species />} />
