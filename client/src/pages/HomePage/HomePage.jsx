@@ -1,204 +1,247 @@
+import { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import { useNavigate } from "react-router-dom";
-
-/* ─── DATA ─── */
-const species = [
-  {
-    name: "Tangara vitriolina",
-    common: "Azulejo real",
-    desc: "Comúnmente avistada en áreas de arbustos y jardines abiertos del campus central.",
-    tag: "Frecuente",
-    tagBg: "#4a7c59",
-    img: "https://images.unsplash.com/photo-1444927714506-8492d94b4e3d?w=600&q=80",
-  },
-  {
-    name: "Piranga rubra",
-    common: "Piranga roja",
-    desc: "Visitante estacional que prefiere las copas de los árboles altos cerca de la facultad de ciencias.",
-    tag: "Migratoria",
-    tagBg: "#0060ac",
-    img: "https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=600&q=80",
-  },
-  {
-    name: "Amazilia tzacatl",
-    common: "Colibrí colirrufo",
-    desc: "Residente permanente, fundamental para la polinización de la flora nativa del campus.",
-    tag: "Endémica",
-    tagBg: "#802919",
-    img: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80",
-  },
-];
+import birdService from "../../services/bird.service";
 
 /* ─── COMPONENT ─── */
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [featuredSpecies, setFeaturedSpecies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Nombres de las aves destacadas
+  const featuredNames = ["Cotorra monje", "Halcón de Harris", "Zanate colilargo"];
+
+  useEffect(() => {
+    loadFeaturedSpecies();
+  }, []);
+
+  const loadFeaturedSpecies = async () => {
+    try {
+      setLoading(true);
+      const response = await birdService.getAllBirds();
+      const allBirds = response.data;
+
+      // Filtrar las 3 aves destacadas
+      const filtered = allBirds.filter(bird =>
+          featuredNames.includes(bird.commonName)
+      );
+
+      setFeaturedSpecies(filtered);
+    } catch (error) {
+      console.error("Error loading featured species:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Función para obtener el color de la etiqueta según la especie
+  const getTagColor = (speciesName) => {
+    switch(speciesName) {
+      case "Cotorra monje": return "";
+      case "Halcón de Harris": return "";
+      case "Zanate colilargo": return "";
+      default: return "#1B4332";
+    }
+  };
+
+  // Función para obtener la etiqueta según la especie
+  const getTagLabel = (speciesName) => {
+    switch(speciesName) {
+      case "Cotorra monje": return "";
+      case "Halcón de Harris": return "";
+      case "Zanate colilargo": return "";
+      default: return "Especie";
+    }
+  };
+
   return (
-    <div style={s.root}>
-      <style>{css}</style>
+      <div style={s.root}>
+        <style>{css}</style>
 
-      {/* ══ NAVBAR ══ */}
-      <Navbar />
+        {/* ══ NAVBAR ══ */}
+        <Navbar />
 
-      <main style={{ paddingTop: "52px" }}>
+        <main style={{ paddingTop: "52px" }}>
 
-        {/* ══ HERO ══ */}
-        <section id="inicio" style={s.hero}>
-          <div style={s.heroBg} />
-          <div style={s.heroOverlay} />
-          <div style={s.heroContent}>
-            <p style={s.heroEyebrow}></p>
-            <h1 style={s.heroTitle}>Descubre la vida del TESOEM</h1>
-            <p style={s.heroSub}>
-              Una ventana abierta al monitoreo científico y la preservación de las especies que
-              habitan nuestra universidad.
-            </p>
-            <a href="#guia" className="hero-btn" style={s.heroBtn}>Ver Guía</a>
-          </div>
-        </section>
-
-        {/* ══ PURPOSE ══ */}
-        <section id="guia" style={s.pageSection}>
-          <div style={s.purposeGrid} className="two-col">
-            <div>
-              <h2 style={s.sectionTitle}>Nuestro Propósito</h2>
-              <p style={s.bodyText}>
-                NidoTeso nace de la necesidad de documentar y proteger la biodiversidad dentro de nuestro campus.
-                Nuestra plataforma integra la participación de la comunidad estudiantil con herramientas digitales
-                interactivas para crear un registro histórico, visual y auditivo de la avifauna en el TESOEM,
-                fomentando así la conciencia ambiental, el aprendizaje práctico y la conservación de las especies locales.
+          {/* ══ HERO ══ */}
+          <section id="inicio" style={s.hero}>
+            <div style={s.heroBg} />
+            <div style={s.heroOverlay} />
+            <div style={s.heroContent}>
+              <p style={s.heroEyebrow}></p>
+              <h1 style={s.heroTitle}>Descubre la vida del TESOEM</h1>
+              <p style={s.heroSub}>
+                Una ventana abierta al monitoreo científico y la preservación de las especies que
+                habitan nuestra universidad.
               </p>
-              <div style={s.featsGrid}>
-                {[
-                  { icon: "👁", t: "Observación", d: "Registro detallado de cada avistamiento." },
-                  { icon: "📖", t: "Educación",   d: "Aprende sobre las aves de tu escuela: Taxonomía y datos curiosos." },
-                ].map((f, i) => (
-                  <div key={i} style={s.feat}>
-                    <span style={{ fontSize: "22px" }}>{f.icon}</span>
-                    <div>
-                      <p style={s.featTitle}>{f.t}</p>
-                      <p style={s.featDesc}>{f.d}</p>
-                    </div>
+              <a href="#guia" className="hero-btn" style={s.heroBtn}>Ver Guía</a>
+            </div>
+          </section>
+
+          {/* ══ PURPOSE ══ */}
+          <section id="guia" style={s.pageSection}>
+            <div style={s.purposeGrid} className="two-col">
+              <div>
+                <h2 style={s.sectionTitle}>Nuestro Propósito</h2>
+                <p style={s.bodyText}>
+                  NidoTeso nace de la necesidad de documentar y proteger la biodiversidad dentro de nuestro campus.
+                  Nuestra plataforma integra la participación de la comunidad estudiantil con herramientas digitales
+                  interactivas para crear un registro histórico, visual y auditivo de la avifauna en el TESOEM,
+                  fomentando así la conciencia ambiental, el aprendizaje práctico y la conservación de las especies locales.
+                </p>
+                <div style={s.featsGrid}>
+                  {[
+                    { icon: "👁", t: "Observación", d: "Registro detallado de cada avistamiento." },
+                    { icon: "📖", t: "Educación",   d: "Aprende sobre las aves de tu escuela: Taxonomía y datos curiosos." },
+                  ].map((f, i) => (
+                      <div key={i} style={s.feat}>
+                        <span style={{ fontSize: "22px" }}>{f.icon}</span>
+                        <div>
+                          <p style={s.featTitle}>{f.t}</p>
+                          <p style={s.featDesc}>{f.d}</p>
+                        </div>
+                      </div>
+                  ))}
+                </div>
+              </div>
+
+              <div style={s.purposeImgWrap}>
+                <img src="/images/ojo.png" alt="Ojo de ave" style={s.purposeImg} />
+                <div style={s.purposeCaption}>
+                  "La observación es el primer paso hacia la conservación."
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ══ SPECIES ══ */}
+          <section id="explorar" style={s.pageSection}>
+            <div style={s.speciesHeader}>
+              <div>
+                <p style={s.eyebrow}>BIODIVERSIDAD LOCAL</p>
+                <h2 style={s.sectionTitle}>Explorador de Especies</h2>
+              </div>
+              <a href="/explorar" className="catalog-btn" style={s.catalogBtn}>
+                Ver Catálogo Completo
+              </a>
+            </div>
+
+            <div style={s.speciesGrid}>
+              {loading ? (
+                  <div style={{ gridColumn: "1/-1", textAlign: "center", padding: "40px" }}>
+                    <div style={s.loadingSpinner}></div>
+                    <p>Cargando especies...</p>
                   </div>
-                ))}
+              ) : (
+                  featuredSpecies.map((bird, i) => (
+                      <div
+                          key={bird._id}
+                          style={{ ...s.spCard, borderRight: i < 2 ? "1px solid #e8e4dc" : "none" }}
+                          className="sp-card"
+                          onClick={() => navigate(`/species/${bird.commonName.toLowerCase().replace(/\s+/g, '-')}/detalles`, { state: { bird } })}
+                      >
+                        <div style={{ position: "relative", height: "180px", overflow: "hidden" }}>
+                          <img
+                              src={bird.imageUrl}
+                              alt={bird.commonName}
+                              style={s.spImg}
+                              className="sp-img"
+                              onError={(e) => {
+                                e.target.src = "https://via.placeholder.com/600x400?text=No+Image";
+                              }}
+                          />
+                          <span style={{ ...s.spTag, background: getTagColor(bird.commonName) }}>
+                      {getTagLabel(bird.commonName)}
+                    </span>
+                        </div>
+                        <div style={{ padding: "16px" }}>
+                          <h3 style={s.spName}>{bird.scientificName}</h3>
+                          <p style={s.spCommon}>{bird.commonName}</p>
+                          <p style={s.spDesc}>
+                            {bird.description?.general?.[0] || "Especie fascinante del TESOEM."}
+                          </p>
+                        </div>
+                      </div>
+                  ))
+              )}
+            </div>
+          </section>
+
+          {/* ══ IMPACT ══ */}
+          <section id="impacto" style={s.pageSection}>
+            <div style={s.impactGrid} className="two-col">
+
+              {/* left */}
+              <div>
+                <p style={s.eyebrow}>CENTRO DE CONSERVACIÓN</p>
+                <h2 style={s.sectionTitle}>Nuestro Impacto en el Ecosistema</h2>
+                <p style={s.bodyText}>
+                  NidoTeso actúa como un puente entre la comunidad universitaria y el entorno natural que la rodea.
+                  Facilitamos el conocimiento de la avifauna local, permitiendo promover la protección de sus hábitats
+                  y fomentando el sentido de pertenencia con el ecosistema del cual es parte la universidad.
+                </p>
+                <button
+                    className="report-btn"
+                    style={s.reportBtn}
+                    onClick={() => navigate("/explorar")}
+                >
+                  Explorar
+                </button>
               </div>
-            </div>
 
-            <div style={s.purposeImgWrap}>
-              <img src="/images/ojo.png" alt="Ojo de ave" style={s.purposeImg} />
-              <div style={s.purposeCaption}>
-                "La observación es el primer paso hacia la conservación."
-              </div>
-            </div>
-          </div>
-        </section>
+              {/* right mosaic */}
+              <div style={s.mosaic}>
+                <div style={s.mosaicRow}>
 
-        {/* ══ SPECIES ══ */}
-        <section id="explorar" style={s.pageSection}>
-          <div style={s.speciesHeader}>
-            <div>
-              <p style={s.eyebrow}>BIODIVERSIDAD LOCAL</p>
-              <h2 style={s.sectionTitle}>Explorador de Especies</h2>
-            </div>
-            <a href="/explorar" className="catalog-btn" style={s.catalogBtn}>
-              Ver Catálogo Completo
-            </a>
-          </div>
+                  {/* Mapa + botón */}
+                  <div style={{ flex: 1, height: "220px", borderRadius: "12px", overflow: "hidden", position: "relative" }}>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3764.6057495451105!2d-98.95662402491672!3d19.342906781917407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ce1d8826f677d5%3A0x32ada1eb4225d05e!2sTecnol%C3%B3gico%20de%20Estudios%20Superiores%20Oriente%20del%20Estado%20de%20M%C3%A9xico!5e0!3m2!1ses-419!2smx!4v1779949877777!5m2!1ses-419!2smx"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0, display: "block" }}
+                        allowFullScreen=""
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Mapa TESOEM"
+                    />
+                    <a
+                        href="https://valmejia.github.io/folleto/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          position: "absolute", bottom: "10px", left: "50%",
+                          transform: "translateX(-50%)",
+                          background: "#1B4332", color: "#fff",
+                          borderRadius: "999px", padding: "8px 20px",
+                          fontFamily: "'Public Sans', sans-serif",
+                          fontSize: "11px", fontWeight: 700,
+                          whiteSpace: "nowrap", textDecoration: "none",
+                        }}
+                    >
+                      Ver Mapa Campus →
+                    </a>
+                  </div>
 
-          <div style={s.speciesGrid}>
-            {species.map((sp, i) => (
-              <div
-                key={i}
-                style={{ ...s.spCard, borderRight: i < 2 ? "1px solid #e8e4dc" : "none" }}
-                className="sp-card"
-              >
-                <div style={{ position: "relative", height: "180px", overflow: "hidden" }}>
-                  <img src={sp.img} alt={sp.name} style={s.spImg} className="sp-img" />
-                  <span style={{ ...s.spTag, background: sp.tagBg }}>{sp.tag}</span>
-                </div>
-                <div style={{ padding: "16px" }}>
-                  <h3 style={s.spName}>{sp.name}</h3>
-                  <p style={s.spCommon}>{sp.common}</p>
-                  <p style={s.spDesc}>{sp.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ══ IMPACT ══ */}
-        <section id="impacto" style={s.pageSection}>
-          <div style={s.impactGrid} className="two-col">
-
-            {/* left */}
-            <div>
-              <p style={s.eyebrow}>CENTRO DE CONSERVACIÓN</p>
-              <h2 style={s.sectionTitle}>Nuestro Impacto en el Ecosistema</h2>
-              <p style={s.bodyText}>
-                NidoTeso actúa como un puente entre la comunidad universitaria y el entorno natural que la rodea.
-                Facilitamos el conocimiento de la avifauna local, permitiendo promover la protección de sus hábitats
-                y fomentando el sentido de pertenencia con el ecosistema del cual es parte la universidad.
-              </p>
-              <button
-                className="report-btn"
-                style={s.reportBtn}
-                onClick={() => navigate("/explorar")}
-              >
-                Explorar
-              </button>
-            </div>
-
-            {/* right mosaic */}
-            <div style={s.mosaic}>
-              <div style={s.mosaicRow}>
-
-                {/* Mapa + botón */}
-                <div style={{ flex: 1, height: "220px", borderRadius: "12px", overflow: "hidden", position: "relative" }}>
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3764.6057495451105!2d-98.95662402491672!3d19.342906781917407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ce1d8826f677d5%3A0x32ada1eb4225d05e!2sTecnol%C3%B3gico%20de%20Estudios%20Superiores%20Oriente%20del%20Estado%20de%20M%C3%A9xico!5e0!3m2!1ses-419!2smx!4v1779949877777!5m2!1ses-419!2smx"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0, display: "block" }}
-                    allowFullScreen=""
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Mapa TESOEM"
-                  />
-                  <a
-                    href="https://valmejia.github.io/folleto/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      position: "absolute", bottom: "10px", left: "50%",
-                      transform: "translateX(-50%)",
-                      background: "#1B4332", color: "#fff",
-                      borderRadius: "999px", padding: "8px 20px",
-                      fontFamily: "'Public Sans', sans-serif",
-                      fontSize: "11px", fontWeight: 700,
-                      whiteSpace: "nowrap", textDecoration: "none",
-                    }}
-                  >
-                    Ver Mapa Campus →
-                  </a>
+                  <div style={s.mosaicStatBox}>
+                    <p style={s.bigNum}>28</p>
+                    <p style={s.bigLabel}>ESPECIES</p>
+                  </div>
                 </div>
 
-                <div style={s.mosaicStatBox}>
-                  <p style={s.bigNum}>28</p>
-                  <p style={s.bigLabel}>ESPECIES</p>
-                </div>
               </div>
 
             </div>
+          </section>
 
-          </div>
-        </section>
+        </main>
 
-      </main>
+        <Footer />
 
-      <Footer />
-
-      <button style={s.fab} className="fab" title="Registrar avistamiento">📷</button>
-    </div>
+        <button style={s.fab} className="fab" title="Registrar avistamiento">📷</button>
+      </div>
   );
 }
 
@@ -299,11 +342,14 @@ const s = {
     fontFamily: "'Newsreader', serif", fontStyle: "italic", fontSize: "12px",
     padding: "10px 16px",
   },
-  fabInner: {
-    position: "absolute", bottom: "12px", right: "12px",
-    width: "36px", height: "36px", borderRadius: "50%",
-    background: GREEN, color: "#fff", border: "none",
-    fontSize: "16px", cursor: "pointer",
+  loadingSpinner: {
+    width: "40px",
+    height: "40px",
+    border: "3px solid #e0dcd0",
+    borderTopColor: GREEN,
+    borderRadius: "50%",
+    animation: "spin 1s linear infinite",
+    margin: "0 auto 12px auto",
   },
 
   /* species */
@@ -347,21 +393,6 @@ const s = {
   impactGrid: {
     display: "grid", gridTemplateColumns: "1fr 1fr",
     gap: "52px", alignItems: "start",
-  },
-  checkRow: { display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "14px" },
-  checkDot: {
-    width: "20px", height: "20px", borderRadius: "50%",
-    background: "#d1fae5", flexShrink: 0, marginTop: "1px",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: "11px", color: GREEN, lineHeight: "20px",
-  },
-  checkTitle: {
-    fontFamily: "'Public Sans', sans-serif",
-    fontSize: "13px", fontWeight: 700, color: TEXT, marginBottom: "2px",
-  },
-  checkDesc: {
-    fontFamily: "'Public Sans', sans-serif",
-    fontSize: "12px", color: MUTED, lineHeight: 1.5,
   },
   reportBtn: {
     background: GREEN, color: "#fff", border: "none",
@@ -409,8 +440,11 @@ const css = `
   .catalog-btn:hover { background: #f5f5e8 !important; }
   .report-btn:hover  { background: #274e3d !important; }
   .fab:hover     { transform: scale(1.08); box-shadow: 0 6px 22px rgba(27,67,50,0.4) !important; }
-  .fab-inner:hover { background: #274e3d !important; }
   .sp-card:hover .sp-img { transform: scale(1.06); }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
 
   @media (max-width: 768px) {
     .two-col { grid-template-columns: 1fr !important; }
