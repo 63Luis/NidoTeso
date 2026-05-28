@@ -371,16 +371,8 @@ export default function ConservationPage() {
                                     <h2 className="initiative-title">Campus amigable con las aves</h2>
                                     <p className="initiative-description">
                                         Abogamos por jardinería con plantas nativas, reducción de iluminación nocturna y control
-                                        orgánico de plagas para un santuario sostenible para especies migratorias.
+                                        orgánico de plagas para un santuario sostenible para las especies.
                                     </p>
-                                    <div className="initiative-tags">
-                                        <button className="initiative-tag">
-                                            <span>🌿</span> Flora Nativa
-                                        </button>
-                                        <button className="initiative-tag">
-                                            <span>🌙</span> Cielos Oscuros
-                                        </button>
-                                    </div>
                                 </div>
                                 <div className="initiative-bg-icon">🌳</div>
                             </section>
