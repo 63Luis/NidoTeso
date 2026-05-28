@@ -1,113 +1,108 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ExploraPage.css";
+import birdService from "../../services/bird.service";
 
 /* ── helper: "Azure Kingfisher" → "azure-kingfisher" ── */
 const toSlug = (name) =>
-  name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+  name?.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "") || "";
 
-/* ─── DATA ─── */
-const ALL_SPECIES = [
-  {
-    id: 1,
-    name: "Azure Kingfisher",
-    scientific: "Ceyx azureus",
-    status: "LEAST CONCERN",
-    statusStyle: "outline",
-    badge: "COMMON",
-    habitat: "Lake Reserve",
-    img: "https://images.unsplash.com/photo-1444927714506-8492d94b4e3d?w=600&q=80",
-  },
-  {
-    id: 2,
-    name: "Emerald Hummer",
-    scientific: "Chlorostilbon lucidus",
-    status: "VULNERABLE",
-    statusStyle: "blue",
-    badge: "ENDEMIC",
-    habitat: "Botanical Garden",
-    img: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80",
-  },
-  {
-    id: 3,
-    name: "Crested Eagle",
-    scientific: "Morphnus guianensis",
-    status: "CRITICAL",
-    statusStyle: "red",
-    badge: null,
-    habitat: "Faculty of Science",
-    img: "https://images.unsplash.com/photo-1611689342806-0863700ce1e4?w=600&q=80",
-  },
-  {
-    id: 4,
-    name: "Yellow Warbler",
-    scientific: "Setophaga petechia",
-    status: "LEAST CONCERN",
-    statusStyle: "outline",
-    badge: null,
-    habitat: "Central Park",
-    img: "https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=600&q=80",
-  },
-  {
-    id: 5,
-    name: "Scarlet Macaw",
-    scientific: "Ara macao",
-    status: "VULNERABLE",
-    statusStyle: "blue",
-    badge: "CAMPUS RESIDENT",
-    habitat: "Central Park",
-    img: "https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=600&q=80",
-  },
-  {
-    id: 6,
-    name: "Grey Heron",
-    scientific: "Ardea cinerea",
-    status: "LEAST CONCERN",
-    statusStyle: "outline",
-    badge: null,
-    habitat: "Lake Reserve",
-    img: "https://images.unsplash.com/photo-1591608516485-a1a53df39498?w=600&q=80",
-  },
-];
-
-const HABITATS = [
-  "All Areas",
-  "Central Park",
-  "Botanical Garden",
-  "Faculty of Science",
-  "Lake Reserve",
-];
-
-/* ─── COMPONENT ─── */
 export default function ExploraPage() {
   const navigate = useNavigate();
 
-  const [search, setSearch]               = useState("");
-  const [activeHabitat, setActiveHabitat] = useState("All Areas");
-  const [visibleCount, setVisibleCount]   = useState(6);
+  const [birds, setBirds] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [search, setSearch] = useState("");
 
-  const filtered = ALL_SPECIES.filter((sp) => {
-    const matchSearch =
-      sp.name.toLowerCase().includes(search.toLowerCase()) ||
-      sp.scientific.toLowerCase().includes(search.toLowerCase());
-    const matchHabitat =
-      activeHabitat === "All Areas" || sp.habitat === activeHabitat;
-    return matchSearch && matchHabitat;
-  });
+  // Cargar aves desde el backend
+  useEffect(() => {
+    loadBirds();
+  }, []);
 
-  const visible = filtered.slice(0, visibleCount);
+  const loadBirds = async () => {
+    try {
+      setLoading(true);
+      const response = await birdService.getAllBirds();
+      setBirds(response.data);
+      setError(null);
+    } catch (err) {
+      console.error("Error loading birds:", err);
+      setError("No se pudieron cargar las aves. Por favor, intenta más tarde.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Filtrar aves basado en búsqueda
+  const filteredBirds = birds.filter((bird) =>
+    bird.commonName?.toLowerCase().includes(search.toLowerCase()) ||
+    bird.scientificName?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Mapear estado de conservación a estilo visual
+  const getStatusStyle = (conservationStatus) => {
+    if (!conservationStatus?.category) return "outline";
+    
+    const category = conservationStatus.category;
+    if (category === "CR") return "red";
+    if (category === "EN" || category === "VU") return "blue";
+    return "outline";
+  };
+
+  // Obtener texto del estado de conservación
+  const getStatusText = (conservationStatus) => {
+    if (!conservationStatus?.description) return "NO EVALUADO";
+    return conservationStatus.description.toUpperCase();
+  };
+
+  // Obtener la primera descripción general
+  const getGeneralDescription = (description) => {
+    if (description?.general && description.general.length > 0) {
+      const text = description.general[0];
+      return text.length > 100 ? text.substring(0, 100) + "..." : text;
+    }
+    return null;
+  };
+
+  // Renderizado condicional
+  if (loading) {
+    return (
+      <div className="explore-root">
+        <main className="explore-main">
+          <div className="explore-loading">
+            <div className="explore-loading-spinner"></div>
+            <p>Cargando aves...</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="explore-root">
+        <main className="explore-main">
+          <div className="explore-error">
+            <p className="explore-error-icon">⚠️</p>
+            <p className="explore-error-text">{error}</p>
+            <button onClick={loadBirds} className="explore-retry-btn">
+              Reintentar
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="explore-root">
-
       <main className="explore-main">
-
         {/* ── Page header ── */}
         <div className="explore-page-header">
-          <h1 className="explore-title">Species Explorer</h1>
+          <h1 className="explore-title">Aves del TESOEM</h1>
           <p className="explore-subtitle">
-            Cataloging the vibrant avian life across our university campus. Discover, identify, and
-            contribute to our growing scientific repository.
+            Explora, identifica y protege las aves de nuestro campus. Un proyecto para conocer y valorar la biodiversidad del TESOEM.
           </p>
         </div>
 
@@ -116,104 +111,83 @@ export default function ExploraPage() {
           <span className="explore-search-icon">🔍</span>
           <input
             type="text"
-            placeholder="Search by name, family, or scientific name…"
+            placeholder="Buscar por nombre común o nombre científico..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="explore-search-input"
           />
         </div>
 
-        {/* ── Habitat filters ── */}
-        <div className="explore-filters-wrap">
-          <span className="explore-filters-label">HABITATS:</span>
-          <div className="explore-filters-list">
-            {HABITATS.map((h) => (
-              <button
-                key={h}
-                onClick={() => { setActiveHabitat(h); setVisibleCount(6); }}
-                className={`explore-filter-btn ${activeHabitat === h ? "active" : ""}`}
-              >
-                {h}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* ── Species grid ── */}
         <div className="explore-grid">
-          {visible.map((sp) => (
-            <div key={sp.id} className="explore-card">
-
+          {filteredBirds.map((bird) => (
+            <div key={bird._id} className="explore-card">
               {/* Image */}
               <div className="explore-card-img-wrap">
                 <img
-                  src={sp.img}
-                  alt={sp.name}
+                  src={bird.imageUrl}
+                  alt={bird.commonName}
                   className="explore-card-img"
+                  onError={(e) => {
+                    e.target.src = "https://via.placeholder.com/600x400?text=No+Image";
+                  }}
                 />
-                {sp.badge && (
-                  <div className="explore-card-badge">{sp.badge}</div>
+                {/* Badge si existe NOM059 */}
+                {bird.conservationStatusNOM059?.description && (
+                  <div className="explore-card-badge">
+                    {bird.conservationStatusNOM059.description}
+                  </div>
                 )}
               </div>
 
               {/* Body */}
               <div className="explore-card-body">
                 <div className="explore-card-top-row">
-                  <h3 className="explore-card-name">{sp.name}</h3>
-                  <span className={`explore-status-pill ${sp.statusStyle}`}>
-                    {sp.status}
+                  <h3 className="explore-card-name">{bird.commonName}</h3>
+                  <span className={`explore-status-pill ${getStatusStyle(bird.conservationStatusIUCN)}`}>
+                    {getStatusText(bird.conservationStatusIUCN)}
                   </span>
                 </div>
 
-                <p className="explore-card-scientific">{sp.scientific}</p>
+                <p className="explore-card-scientific">{bird.scientificName}</p>
+
+                {/* Mostrar un resumen de la descripción general si existe */}
+                {getGeneralDescription(bird.description) && (
+                  <p className="explore-card-description">
+                    {getGeneralDescription(bird.description)}
+                  </p>
+                )}
 
                 <div className="explore-card-footer">
                   <div className="explore-card-location">
                     <span className="explore-card-location-icon">📍</span>
-                    <span className="explore-card-location-text">{sp.habitat}</span>
+                    <span className="explore-card-location-text">
+                      {bird.distributionMexico || "TESOEM"}
+                    </span>
                   </div>
 
-                  {/* ── View Details → navega a /species/nombre-del-ave/detalles ── */}
                   <button
                     className="explore-details-btn"
-                    onClick={() => navigate(`/species/${toSlug(sp.name)}/detalles`)}
+                    onClick={() => navigate(`/species/${toSlug(bird.commonName)}/detalles`, { state: { bird } })}
                   >
-                    View Details →
+                    Ver detalles →
                   </button>
                 </div>
               </div>
-
             </div>
           ))}
         </div>
 
         {/* ── Empty state ── */}
-        {visible.length === 0 && (
+        {filteredBirds.length === 0 && (
           <div className="explore-empty">
             <p className="explore-empty-icon">🦅</p>
-            <p className="explore-empty-text">No species found for your search.</p>
+            <p className="explore-empty-text">
+              {search ? "No se encontraron especies para tu búsqueda." : "No hay especies disponibles."}
+            </p>
           </div>
         )}
-
-        {/* ── Load more ── */}
-        {visibleCount < filtered.length && (
-          <div className="explore-load-more-wrap">
-            <button
-              className="explore-load-more-btn"
-              onClick={() => setVisibleCount((c) => c + 4)}
-            >
-              🔄 Load More Species
-            </button>
-          </div>
-        )}
-
       </main>
-
-      {/* ── FAB ── */}
-      <button className="explore-fab" title="Registrar avistamiento">
-        📷
-      </button>
-
     </div>
   );
 }

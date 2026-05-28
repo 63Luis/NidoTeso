@@ -37,6 +37,7 @@ export default function LandingPage() {
     <div style={s.root}>
       <style>{css}</style>
 
+      {/* ══ NAVBAR ══ */}
       <Navbar />
 
       <main style={{ paddingTop: "52px" }}>
@@ -298,6 +299,14 @@ const s = {
     fontFamily: "'Newsreader', serif", fontStyle: "italic", fontSize: "12px",
     padding: "10px 16px",
   },
+  fabInner: {
+    position: "absolute", bottom: "12px", right: "12px",
+    width: "36px", height: "36px", borderRadius: "50%",
+    background: GREEN, color: "#fff", border: "none",
+    fontSize: "16px", cursor: "pointer",
+  },
+
+  /* species */
   speciesHeader: {
     display: "flex", alignItems: "flex-end",
     justifyContent: "space-between", marginBottom: "24px",
@@ -333,9 +342,26 @@ const s = {
     fontFamily: "'Public Sans', sans-serif",
     fontSize: "11.5px", color: MUTED, lineHeight: 1.6,
   },
+
+  /* impact */
   impactGrid: {
     display: "grid", gridTemplateColumns: "1fr 1fr",
     gap: "52px", alignItems: "start",
+  },
+  checkRow: { display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "14px" },
+  checkDot: {
+    width: "20px", height: "20px", borderRadius: "50%",
+    background: "#d1fae5", flexShrink: 0, marginTop: "1px",
+    display: "flex", alignItems: "center", justifyContent: "center",
+    fontSize: "11px", color: GREEN, lineHeight: "20px",
+  },
+  checkTitle: {
+    fontFamily: "'Public Sans', sans-serif",
+    fontSize: "13px", fontWeight: 700, color: TEXT, marginBottom: "2px",
+  },
+  checkDesc: {
+    fontFamily: "'Public Sans', sans-serif",
+    fontSize: "12px", color: MUTED, lineHeight: 1.5,
   },
   reportBtn: {
     background: GREEN, color: "#fff", border: "none",
@@ -361,6 +387,8 @@ const s = {
     fontSize: "9px", fontWeight: 700, letterSpacing: "0.1em",
     color: MUTED, marginTop: "4px", textAlign: "center",
   },
+
+  /* fab */
   fab: {
     position: "fixed", bottom: "28px", right: "28px",
     width: "52px", height: "52px",
@@ -376,11 +404,14 @@ const css = `
   @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Public+Sans:wght@400;600;700&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   a { text-decoration: none; }
-  .hero-btn:hover    { background: #274e3d !important; }
+
+  .hero-btn:hover   { background: #274e3d !important; }
   .catalog-btn:hover { background: #f5f5e8 !important; }
   .report-btn:hover  { background: #274e3d !important; }
-  .fab:hover         { transform: scale(1.08); box-shadow: 0 6px 22px rgba(27,67,50,0.4) !important; }
+  .fab:hover     { transform: scale(1.08); box-shadow: 0 6px 22px rgba(27,67,50,0.4) !important; }
+  .fab-inner:hover { background: #274e3d !important; }
   .sp-card:hover .sp-img { transform: scale(1.06); }
+
   @media (max-width: 768px) {
     .two-col { grid-template-columns: 1fr !important; }
   }

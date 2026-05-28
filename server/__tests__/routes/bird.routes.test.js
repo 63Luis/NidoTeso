@@ -1,15 +1,15 @@
-// Mocks - Corregir rutas (subir 2 niveles desde __tests__/routes/ hasta server/)
-jest.mock("../../models/Bird.model");
-jest.mock("../../middleware/jwt.middleware", () => ({
+// Mocks
+jest.mock("../../../models/Bird.model");
+jest.mock("../../../middleware/jwt.middleware", () => ({
   isAuthenticated: (req, res, next) => {
     req.payload = { _id: "testUserId", email: "test@test.com", name: "Test User" };
     next();
   }
 }));
 
-const Bird = require("../../models/Bird.model");
+const Bird = require("../../../models/Bird.model");
 const express = require("express");
-const birdRoutes = require("../../routes/bird.routes");
+const birdRoutes = require("../../../routes/bird.routes");
 
 const app = express();
 app.use(express.json());
@@ -39,7 +39,12 @@ describe("Bird Routes", () => {
     const validBird = {
       commonName: "Águila Real",
       scientificName: "Aquila chrysaetos",
-      imageUrl: "https://example.com/aguila.jpg"
+      imageUrl: "https://example.com/aguila.jpg",
+      audioUrl: "https://example.com/audio.mp3",
+      behavior: ["Caza en vuelo", "Monógama"],
+      diet: "Conejos",
+      distributionMexico: "Norte de México",
+      curiousFacts: ["Dato 1", "Dato 2"]
     };
 
     it("debe crear un ave cuando está autenticado", async () => {
@@ -149,6 +154,41 @@ describe("Bird Routes", () => {
         await routeHandler(req, res, next);
         expect(res.status).toHaveBeenCalledWith(404);
         expect(res.json).toHaveBeenCalledWith({ message: "Bird not found" });
+      }
+    });
+  });
+
+  describe("PUT /api/birds/:id", () => {
+    it("debe actualizar un ave cuando está autenticado", async () => {
+      const existingBird = {
+        _id: "123",
+        commonName: "Original Name",
+        scientificName: "Original Species",
+        imageUrl: "https://example.com/original.jpg"
+      };
+
+      const updatedBird = {
+        ...existingBird,
+        commonName: "Updated Name",
+        diet: "Insects"
+      };
+
+      Bird.findById.mockResolvedValue(existingBird);
+      Bird.findOne.mockResolvedValue(null);
+      Bird.findByIdAndUpdate.mockResolvedValue(updatedBird);
+
+      const req = mockRequest({ commonName: "Updated Name", diet: "Insects" }, { id: "123" });
+      const res = mockResponse();
+      const next = jest.fn();
+
+      const routeHandler = birdRoutes.stack.find(
+        layer => layer.route?.path === '/birds/:id' && layer.route?.methods?._put
+      )?.handle;
+
+      if (routeHandler) {
+        await routeHandler(req, res, next);
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith(updatedBird);
       }
     });
   });
