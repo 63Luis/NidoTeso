@@ -1,5 +1,6 @@
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
+import { useNavigate } from "react-router-dom";
 
 /* ─── DATA ─── */
 const species = [
@@ -31,11 +32,11 @@ const species = [
 
 /* ─── COMPONENT ─── */
 export default function LandingPage() {
+  const navigate = useNavigate();
   return (
     <div style={s.root}>
       <style>{css}</style>
 
-      {/* ══ NAVBAR ══ */}
       <Navbar />
 
       <main style={{ paddingTop: "52px" }}>
@@ -45,13 +46,13 @@ export default function LandingPage() {
           <div style={s.heroBg} />
           <div style={s.heroOverlay} />
           <div style={s.heroContent}>
-            <p style={s.heroEyebrow}>OBSERVATORIO UNIVERSITARIO</p>
-            <h1 style={s.heroTitle}>Descubre la vida alada de tu campus</h1>
+            <p style={s.heroEyebrow}></p>
+            <h1 style={s.heroTitle}>Descubre la vida del TESOEM</h1>
             <p style={s.heroSub}>
               Una ventana abierta al monitoreo científico y la preservación de las especies que
-              habitan nuestros espacios compartidos.
+              habitan nuestra universidad.
             </p>
-            <a href="#guia" className="hero-btn" style={s.heroBtn}>Explorar Guía</a>
+            <a href="#guia" className="hero-btn" style={s.heroBtn}>Ver Guía</a>
           </div>
         </section>
 
@@ -61,14 +62,15 @@ export default function LandingPage() {
             <div>
               <h2 style={s.sectionTitle}>Nuestro Propósito</h2>
               <p style={s.bodyText}>
-                EcoAlas nace de la necesidad de documentar y proteger la biodiversidad urbana.
-                Nuestra plataforma integra ciencia ciudadana con monitoreo profesional para crear
-                un registro histórico de la avifauna en el campus.
+                NidoTeso nace de la necesidad de documentar y proteger la biodiversidad dentro de nuestro campus.
+                Nuestra plataforma integra la participación de la comunidad estudiantil con herramientas digitales
+                interactivas para crear un registro histórico, visual y auditivo de la avifauna en el TESOEM,
+                fomentando así la conciencia ambiental, el aprendizaje práctico y la conservación de las especies locales.
               </p>
               <div style={s.featsGrid}>
                 {[
                   { icon: "👁", t: "Observación", d: "Registro detallado de cada avistamiento." },
-                  { icon: "📖", t: "Educación",   d: "Aprende sobre taxonomía y hábitats." },
+                  { icon: "📖", t: "Educación",   d: "Aprende sobre las aves de tu escuela: Taxonomía y datos curiosos." },
                 ].map((f, i) => (
                   <div key={i} style={s.feat}>
                     <span style={{ fontSize: "22px" }}>{f.icon}</span>
@@ -82,15 +84,10 @@ export default function LandingPage() {
             </div>
 
             <div style={s.purposeImgWrap}>
-              <img
-                src="https://images.unsplash.com/photo-1504618223053-559bdef9ad5f?w=700&q=80"
-                alt="Ojo de ave"
-                style={s.purposeImg}
-              />
+              <img src="/ojo.png" alt="Ojo de ave" style={s.purposeImg} />
               <div style={s.purposeCaption}>
                 "La observación es el primer paso hacia la conservación."
               </div>
-              <button style={s.fabInner} className="fab-inner">📷</button>
             </div>
           </div>
         </section>
@@ -131,77 +128,81 @@ export default function LandingPage() {
         {/* ══ IMPACT ══ */}
         <section id="impacto" style={s.pageSection}>
           <div style={s.impactGrid} className="two-col">
+
             {/* left */}
             <div>
               <p style={s.eyebrow}>CENTRO DE CONSERVACIÓN</p>
               <h2 style={s.sectionTitle}>Nuestro Impacto en el Ecosistema</h2>
               <p style={s.bodyText}>
-                A través del monitoreo constante, hemos logrado identificar zonas críticas de
-                nidificación y alimentación, lo que ha permitido implementar políticas de
-                jardinería sostenible y protección de hábitats específicos.
+                NidoTeso actúa como un puente entre la comunidad universitaria y el entorno natural que la rodea.
+                Facilitamos el conocimiento de la avifauna local, permitiendo promover la protección de sus hábitats
+                y fomentando el sentido de pertenencia con el ecosistema del cual es parte la universidad.
               </p>
-              <div style={{ marginTop: "20px", marginBottom: "28px" }}>
-                {[
-                  { t: "Restauración de Hábitat", d: "Más de 500 árboles nativos plantados para crear corredores biológicos." },
-                  { t: "Reducción de Amenazas",   d: "Implementación de medidas para prevenir colisiones en ventanales de edificios." },
-                ].map((item, i) => (
-                  <div key={i} style={s.checkRow}>
-                    <div style={s.checkDot}>✓</div>
-                    <div>
-                      <p style={s.checkTitle}>{item.t}</p>
-                      <p style={s.checkDesc}>{item.d}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <button className="report-btn" style={s.reportBtn}>Ver Informe Anual</button>
+              <button
+                className="report-btn"
+                style={s.reportBtn}
+                onClick={() => navigate("/explorar")}
+              >
+                Explorar
+              </button>
             </div>
 
             {/* right mosaic */}
             <div style={s.mosaic}>
               <div style={s.mosaicRow}>
-                <div style={{ flex: 1, height: "160px", borderRadius: "12px", overflow: "hidden" }}>
-                  <img
-                    src="https://images.unsplash.com/photo-1569336415962-a4bd9f69c8bf?w=500&q=80"
-                    alt="Mapa campus"
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+
+                {/* Mapa + botón */}
+                <div style={{ flex: 1, height: "220px", borderRadius: "12px", overflow: "hidden", position: "relative" }}>
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3764.6057495451105!2d-98.95662402491672!3d19.342906781917407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ce1d8826f677d5%3A0x32ada1eb4225d05e!2sTecnol%C3%B3gico%20de%20Estudios%20Superiores%20Oriente%20del%20Estado%20de%20M%C3%A9xico!5e0!3m2!1ses-419!2smx!4v1779949877777!5m2!1ses-419!2smx"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, display: "block" }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Mapa TESOEM"
                   />
+                  <a
+                    href="https://valmejia.github.io/folleto/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      position: "absolute", bottom: "10px", left: "50%",
+                      transform: "translateX(-50%)",
+                      background: "#1B4332", color: "#fff",
+                      borderRadius: "999px", padding: "8px 20px",
+                      fontFamily: "'Public Sans', sans-serif",
+                      fontSize: "11px", fontWeight: 700,
+                      whiteSpace: "nowrap", textDecoration: "none",
+                    }}
+                  >
+                    Ver Mapa Campus →
+                  </a>
                 </div>
+
                 <div style={s.mosaicStatBox}>
-                  <p style={s.bigNum}>142</p>
+                  <p style={s.bigNum}>28</p>
                   <p style={s.bigLabel}>ESPECIES</p>
                 </div>
               </div>
-              <div style={s.mosaicRow}>
-                <div style={{ ...s.mosaicStatBox, background: "#c1ecd4" }}>
-                  <p style={s.bigNum}>85%</p>
-                  <p style={{ ...s.bigLabel, color: "#3f6653" }}>ÁREA PROTEGIDA</p>
-                </div>
-                <div style={{ flex: 1, height: "130px", borderRadius: "12px", overflow: "hidden" }}>
-                  <img
-                    src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&q=80"
-                    alt="Ave colorida"
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  />
-                </div>
-              </div>
+
             </div>
+
           </div>
         </section>
 
       </main>
 
-      {/* ══ FOOTER ══ */}
       <Footer />
 
-      {/* ══ FAB ══ */}
       <button style={s.fab} className="fab" title="Registrar avistamiento">📷</button>
     </div>
   );
 }
 
 /* ─── TOKENS ─── */
-const GREEN = "#1B4332";
+const GREEN  = "#1B4332";
 const GREEN2 = "#3f6653";
 const MUTED  = "#6B705C";
 const TEXT   = "#1c1c18";
@@ -211,8 +212,6 @@ const s = {
     fontFamily: "'Public Sans', sans-serif",
     background: "#F5F5E8", color: TEXT, minHeight: "100vh",
   },
-
-  /* hero */
   hero: {
     position: "relative", height: "420px",
     display: "flex", alignItems: "center", justifyContent: "center",
@@ -220,8 +219,8 @@ const s = {
   },
   heroBg: {
     position: "absolute", inset: 0,
-    backgroundImage: "url('https://images.unsplash.com/photo-1444927714506-8492d94b4e3d?w=1400&q=85')",
-    backgroundSize: "cover", backgroundPosition: "center 40%",
+    backgroundImage: "url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1400&q=85')",
+    backgroundSize: "cover", backgroundPosition: "center",
     filter: "brightness(0.72) saturate(0.85)",
   },
   heroOverlay: {
@@ -256,8 +255,6 @@ const s = {
     fontFamily: "'Public Sans', sans-serif",
     fontSize: "13px", fontWeight: 600,
   },
-
-  /* sections */
   pageSection: {
     background: "#fff", padding: "52px 40px",
     maxWidth: "1100px", margin: "0 auto",
@@ -301,14 +298,6 @@ const s = {
     fontFamily: "'Newsreader', serif", fontStyle: "italic", fontSize: "12px",
     padding: "10px 16px",
   },
-  fabInner: {
-    position: "absolute", bottom: "12px", right: "12px",
-    width: "36px", height: "36px", borderRadius: "50%",
-    background: GREEN, color: "#fff", border: "none",
-    fontSize: "16px", cursor: "pointer",
-  },
-
-  /* species */
   speciesHeader: {
     display: "flex", alignItems: "flex-end",
     justifyContent: "space-between", marginBottom: "24px",
@@ -344,26 +333,9 @@ const s = {
     fontFamily: "'Public Sans', sans-serif",
     fontSize: "11.5px", color: MUTED, lineHeight: 1.6,
   },
-
-  /* impact */
   impactGrid: {
     display: "grid", gridTemplateColumns: "1fr 1fr",
     gap: "52px", alignItems: "start",
-  },
-  checkRow: { display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "14px" },
-  checkDot: {
-    width: "20px", height: "20px", borderRadius: "50%",
-    background: "#d1fae5", flexShrink: 0, marginTop: "1px",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: "11px", color: GREEN, lineHeight: "20px",
-  },
-  checkTitle: {
-    fontFamily: "'Public Sans', sans-serif",
-    fontSize: "13px", fontWeight: 700, color: TEXT, marginBottom: "2px",
-  },
-  checkDesc: {
-    fontFamily: "'Public Sans', sans-serif",
-    fontSize: "12px", color: MUTED, lineHeight: 1.5,
   },
   reportBtn: {
     background: GREEN, color: "#fff", border: "none",
@@ -389,8 +361,6 @@ const s = {
     fontSize: "9px", fontWeight: 700, letterSpacing: "0.1em",
     color: MUTED, marginTop: "4px", textAlign: "center",
   },
-
-  /* fab */
   fab: {
     position: "fixed", bottom: "28px", right: "28px",
     width: "52px", height: "52px",
@@ -406,14 +376,11 @@ const css = `
   @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Public+Sans:wght@400;600;700&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   a { text-decoration: none; }
-
-  .hero-btn:hover   { background: #274e3d !important; }
+  .hero-btn:hover    { background: #274e3d !important; }
   .catalog-btn:hover { background: #f5f5e8 !important; }
   .report-btn:hover  { background: #274e3d !important; }
-  .fab:hover     { transform: scale(1.08); box-shadow: 0 6px 22px rgba(27,67,50,0.4) !important; }
-  .fab-inner:hover { background: #274e3d !important; }
+  .fab:hover         { transform: scale(1.08); box-shadow: 0 6px 22px rgba(27,67,50,0.4) !important; }
   .sp-card:hover .sp-img { transform: scale(1.06); }
-
   @media (max-width: 768px) {
     .two-col { grid-template-columns: 1fr !important; }
   }
