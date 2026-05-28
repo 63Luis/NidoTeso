@@ -193,9 +193,6 @@ export default function LandingPage() {
 
       {/* ══ FOOTER ══ */}
       <Footer />
-
-      {/* ══ FAB ══ */}
-      <button style={s.fab} className="fab" title="Registrar avistamiento">📷</button>
     </div>
   );
 }

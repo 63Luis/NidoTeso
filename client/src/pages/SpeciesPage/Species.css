@@ -24,6 +24,67 @@
 }
 
 /* ════════════════════════════
+   LOADING & ERROR STATES
+════════════════════════════ */
+.detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+}
+
+.detail-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid #e0dcd0;
+  border-top-color: #1B4332;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.detail-error {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.detail-error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.detail-error-text {
+  font-family: 'Public Sans', sans-serif;
+  font-size: 16px;
+  color: #b91c1c;
+  margin-bottom: 20px;
+}
+
+.detail-retry-btn {
+  padding: 10px 24px;
+  background: #1B4332;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: 'Public Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.detail-retry-btn:hover {
+  background: #0f2b20;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ════════════════════════════
    HERO SECTION
 ════════════════════════════ */
 .detail-hero {
@@ -46,6 +107,7 @@
   border-bottom-left-radius: 80px 40px;
   border-bottom-right-radius: 20px 10px;
   aspect-ratio: 4/3;
+  background: #e8e5dc;
 }
 
 .detail-img {
@@ -126,7 +188,6 @@
   left: 0;
   top: 0;
   height: 100%;
-  width: 33%;
   background: #1B4332;
   border-radius: 999px;
 }
@@ -150,33 +211,6 @@
   padding-top: 8px;
 }
 
-.detail-badges {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.detail-status-badge {
-  font-family: 'Public Sans', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 4px 12px;
-  border-radius: 999px;
-  border: 1.5px solid #1B4332;
-  color: #1B4332;
-  background: transparent;
-}
-
-.detail-id {
-  font-family: 'Public Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  color: #717973;
-}
-
 .detail-bird-name {
   font-family: 'Newsreader', serif;
   font-size: clamp(28px, 4vw, 42px);
@@ -194,78 +228,57 @@
   margin-bottom: 24px;
 }
 
-.detail-description {
-  font-family: 'Public Sans', sans-serif;
-  font-size: 14px;
-  color: rgba(28, 28, 24, 0.8);
-  line-height: 1.75;
-  margin-bottom: 28px;
-}
-
-/* Quick stats bento */
-.detail-stats-bento {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+/* Lista de descripción general */
+.detail-description-list {
   margin-bottom: 24px;
 }
 
-.detail-stat-box {
-  background: #f6f3ec;
-  border: 1px solid rgba(193, 200, 194, 0.4);
-  border-radius: 16px;
-  padding: 16px;
-}
-
-.detail-stat-icon {
-  font-size: 20px;
-  margin-bottom: 6px;
-  display: block;
-}
-
-.detail-stat-label {
-  font-family: 'Public Sans', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #717973;
-  margin-bottom: 4px;
-}
-
-.detail-stat-value {
-  font-family: 'Public Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: #1c1c18;
-}
-
-/* Log sighting button */
-.detail-log-btn {
-  width: 100%;
-  background: #1B4332;
-  color: #fff;
-  border: none;
-  border-radius: 999px;
-  padding: 15px 24px;
+.detail-description-item {
   font-family: 'Public Sans', sans-serif;
   font-size: 14px;
+  color: rgba(28, 28, 24, 0.8);
+  line-height: 1.6;
+  margin-bottom: 10px;
+  padding-left: 0;
+}
+
+/* Badge de conservación GRANDE */
+.detail-conservation-badge {
+  margin-bottom: 28px;
+}
+
+.detail-status-badge-large {
+  font-family: 'Public Sans', sans-serif;
+  font-size: 16px;
   font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: opacity 0.2s, transform 0.15s;
+  letter-spacing: 0.05em;
+  padding: 10px 24px;
+  border-radius: 999px;
+  display: inline-block;
 }
 
-.detail-log-btn:hover {
-  opacity: 0.9;
-  transform: scale(1.01);
+.detail-status-badge-large.green {
+  background: #2e7d32;
+  color: white;
+  border: none;
 }
 
-.detail-log-btn:active {
-  transform: scale(0.98);
+.detail-status-badge-large.outline {
+  border: 2px solid #1B4332;
+  color: #1B4332;
+  background: transparent;
+}
+
+.detail-status-badge-large.blue {
+  background: #38bdf8;
+  color: #fff;
+  border: none;
+}
+
+.detail-status-badge-large.red {
+  background: #ef4444;
+  color: #fff;
+  border: none;
 }
 
 /* ════════════════════════════
@@ -279,8 +292,6 @@
 }
 
 /* ── Habits & Ecology ── */
-.detail-habits-col {}
-
 .detail-section-title {
   font-family: 'Newsreader', serif;
   font-size: 22px;
@@ -288,100 +299,104 @@
   color: #1B4332;
   border-bottom: 1px solid #e5e2db;
   padding-bottom: 14px;
+  margin-bottom: 28px;
+}
+
+/* Bloques de información */
+.detail-info-block {
+  margin-bottom: 32px;
+}
+
+.detail-info-label {
+  font-family: 'Public Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1B4332;
+  margin-bottom: 12px;
+}
+
+.detail-info-text {
+  font-family: 'Public Sans', sans-serif;
+  font-size: 14px;
+  color: rgba(28, 28, 24, 0.8);
+  line-height: 1.65;
+}
+
+/* Lista de comportamiento */
+.detail-behavior-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.detail-behavior-item {
+  padding: 10px 0 10px 20px;
+  position: relative;
+  font-size: 14px;
+  color: rgba(28, 28, 24, 0.8);
+  line-height: 1.6;
+  border-bottom: 1px solid #e8e5dc;
+}
+
+.detail-behavior-item:last-child {
+  border-bottom: none;
+}
+
+.detail-behavior-item::before {
+  content: "•";
+  position: absolute;
+  left: 4px;
+  color: #1B4332;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Curious Facts Box */
+.detail-curious-box {
+  background: #f5f3ee;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 8px;
   margin-bottom: 24px;
 }
 
-.detail-habits-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  margin-bottom: 36px;
-}
-
-.detail-habit-label {
-  font-family: 'Public Sans', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #012d1d;
-  margin-bottom: 8px;
-}
-
-.detail-habit-text {
-  font-family: 'Public Sans', sans-serif;
-  font-size: 13.5px;
-  color: rgba(28, 28, 24, 0.8);
-  line-height: 1.75;
-}
-
-/* Regional Distribution map */
-.detail-map-box {
-  background: #f1eee7;
-  border: 1px solid rgba(193, 200, 194, 0.5);
-  border-radius: 24px;
-  padding: 24px;
-}
-
-.detail-map-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.detail-map-title {
+.detail-curious-title {
   font-family: 'Newsreader', serif;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
-  color: #012d1d;
+  color: #1B4332;
+  margin-bottom: 12px;
 }
 
-.detail-map-icon {
-  font-size: 20px;
-  color: #717973;
+.detail-curious-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.detail-map-img-wrap {
-  border-radius: 14px;
-  overflow: hidden;
-  aspect-ratio: 21/9;
+.detail-curious-item {
+  padding: 8px 0 8px 24px;
   position: relative;
-  background: #dcdad3;
+  font-size: 13px;
+  color: #4a5343;
+  line-height: 1.5;
+  border-bottom: 1px solid #e8e5dc;
 }
 
-.detail-map-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.65;
+.detail-curious-item:last-child {
+  border-bottom: none;
 }
 
-.detail-map-overlay {
+.detail-curious-item::before {
+  content:"";
   position: absolute;
-  inset: 0;
-  background: rgba(1, 45, 29, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.detail-map-chip {
-  font-family: 'Public Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  background: rgba(252, 249, 242, 0.85);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(1, 45, 29, 0.18);
-  border-radius: 999px;
-  padding: 6px 16px;
-  color: #012d1d;
+  left: 0;
+  top: 8px;
 }
 
 /* ── Field Ethics panel ── */
-.detail-ethics-col {}
-
 .detail-ethics-box {
   background: rgba(113, 30, 15, 0.06);
   border: 1px solid rgba(82, 6, 0, 0.1);
@@ -478,6 +493,33 @@
   text-decoration: underline;
 }
 
+/* ── BACK BUTTON ── */
+.detail-back-btn {
+  position: fixed;
+  top: 64px;
+  left: 20px;
+  background: rgba(252, 249, 242, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid #e0dcd0;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-family: 'Public Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1B4332;
+  cursor: pointer;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.detail-back-btn:hover {
+  background: rgba(252, 249, 242, 1);
+  transform: translateX(-2px);
+}
+
 /* ── FAB ── */
 .detail-fab {
   position: fixed;
@@ -506,6 +548,10 @@
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
+  .detail-main {
+    padding: 72px 24px 60px;
+  }
+
   .detail-hero {
     grid-template-columns: 1fr;
     gap: 32px;
@@ -513,20 +559,76 @@
 
   .detail-secondary {
     grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .detail-back-btn {
+    top: 20px;
+    left: 16px;
+    padding: 6px 14px;
+    font-size: 12px;
   }
 }
 
 @media (max-width: 600px) {
   .detail-main {
-    padding: 72px 16px 80px;
+    padding: 60px 16px 80px;
   }
 
-  .detail-habits-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .detail-bird-name {
+    font-size: 28px;
   }
 
-  .detail-stats-bento {
-    grid-template-columns: 1fr 1fr;
+  .detail-scientific {
+    font-size: 13px;
+  }
+
+  .detail-description-item {
+    font-size: 13px;
+  }
+
+  .detail-status-badge-large {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+
+  .detail-section-title {
+    font-size: 20px;
+  }
+
+  .detail-info-label {
+    font-size: 11px;
+  }
+
+  .detail-info-text {
+    font-size: 13px;
+  }
+
+  .detail-behavior-item {
+    font-size: 13px;
+    padding: 8px 0 8px 18px;
+  }
+
+  .detail-fab {
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+
+  .detail-back-btn {
+    top: 16px;
+    left: 12px;
+    padding: 5px 12px;
+    font-size: 11px;
+  }
+
+  .detail-ethics-box {
+    padding: 20px;
+  }
+
+  .detail-conservation-badge {
+    margin-bottom: 20px;
   }
 }
