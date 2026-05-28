@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ConservationPage.css";
+import Footer from "../../components/Footer/Footer";
+
 
 // URLs de imágenes para cada guía
 const GUIDE_IMAGES = {
-    emergency: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&q=80",
-    window: "https://images.unsplash.com/photo-1519121785383-3229633bb75b?w=600&q=80",
-    garden: "https://images.unsplash.com/photo-1470753937643-14eb3ecd3e7a?w=600&q=80",
-    kit: "https://images.unsplash.com/photo-1584515933487-779824d29309?w=600&q=80",
-    fractures: "https://images.unsplash.com/photo-1474540412665-1cdae210ae0c?w=600&q=80",
+    emergency: "/images/Protocolo.png",
+    window: "/images/SeguridadEnVentanas.png",
+    garden: "/images/JardinParaAves.png",
+    kit: "/images/Kit.png",
+    fractures: "/images/Fracturas.png",
     migration: "https://images.unsplash.com/photo-1511207538754-e8555f2bc187?w=600&q=80",
-    whennot: "https://images.unsplash.com/photo-1465101162946-4377e57745c3?w=600&q=80",
+    whennot: "/images/NoAyudar.png",
     tips: "https://images.unsplash.com/photo-1444464666168-49d633b86797?w=600&q=80"
 };
 
@@ -256,27 +258,27 @@ export default function ConservationPage() {
     };
 
     // Separar los artículos en dos grupos
-    const mainGuides = BLOG_POSTS.slice(0, 3); // Protocolo, Seguridad, Jardín
-    const moreGuides = BLOG_POSTS.slice(3);   // Kit, Fracturas, Cuándo no ayudar
+    const mainGuides = BLOG_POSTS.slice(0, 6); // Protocolo, Seguridad, Jardín
 
     return (
         <div className="conservation-page">
             <main className="conservation-main">
+                {/* ── HERO SECTION ── */}
+                <section className="hero-section">
+                    <div className="hero-bg"></div>
+                    <div className="hero-overlay"></div>
+                    <div className="hero-content">
+                        <span className="hero-eyebrow">Iniciativa Científica</span>
+                        <h1 className="hero-title">Centro de Conservación</h1>
+                        <p className="hero-description">
+                            Un espacio dedicado a la investigación aplicada y la acción comunitaria para la protección
+                            de la biodiversidad aviar en nuestro campus y ecosistemas urbanos.
+                        </p>
+                    </div>
+                </section>
                 <div className="conservation-container">
 
-                    {/* ── HERO SECTION ── */}
-                    <section className="hero-section">
-                        <div className="hero-bg"></div>
-                        <div className="hero-overlay"></div>
-                        <div className="hero-content">
-                            <span className="hero-eyebrow">Iniciativa Científica</span>
-                            <h1 className="hero-title">Centro de Conservación</h1>
-                            <p className="hero-description">
-                                Un espacio dedicado a la investigación aplicada y la acción comunitaria para la protección
-                                de la biodiversidad aviar en nuestro campus y ecosistemas urbanos.
-                            </p>
-                        </div>
-                    </section>
+
 
                     {/* ── GUÍAS PRINCIPALES DE CONSERVACIÓN (3 columnas) ── */}
                     <section className="guides-section">
@@ -402,36 +404,7 @@ export default function ConservationPage() {
                                 </div>
                             </section>
 
-                            {/* Más Guías de Conservación - Kit, Fracturas, Cuándo no ayudar */}
-                            <div className="more-guides-grid">
-                                {moreGuides.map((post) => (
-                                    <div
-                                        key={post.id}
-                                        onClick={() => openArticle(post.id)}
-                                        className="mini-guide-card"
-                                    >
-                                        <div className="mini-guide-image">
-                                            <img src={post.image} alt={post.title} />
-                                        </div>
-                                        <div className="mini-guide-content">
-                                            <h3 className="mini-guide-title">{post.title}</h3>
-                                            <p className="mini-guide-subtitle">{post.subtitle}</p>
-                                            <ul className="mini-guide-steps">
-                                                {post.steps.slice(0, 2).map((step, idx) => (
-                                                    <li key={idx} className="mini-guide-step">
-                                                        <span className="mini-step-number">{idx + 1}</span>
-                                                        <span>{step}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                            <div className="mini-guide-footer">
-                                                <span>Leer artículo completo</span>
-                                                <span className="arrow-icon">→</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+
                         </div>
 
                         {/* COLUMNA DERECHA */}
@@ -488,32 +461,13 @@ export default function ConservationPage() {
                         </div>
                     </div>
 
-                    {/* ── ESTADOS DE CONSERVACIÓN ── */}
-                    <section className="status-section">
-                        <h3 className="status-title">Estados de Conservación en el Campus</h3>
-                        <div className="status-chips">
-                            <span className="status-chip status-lc">Preocupación Menor (LC)</span>
-                            <span className="status-chip status-nt">Casi Amenazado (NT)</span>
-                            <span className="status-chip status-vu">Vulnerable (VU)</span>
-                            <span className="status-chip status-en">En Peligro (EN)</span>
-                        </div>
-                    </section>
 
                 </div>
             </main>
 
-            {/* Floating Action Button */}
-            <button className="fab-button" title="Reportar">
-                <span>⚠️</span>
-            </button>
 
             {/* Footer */}
-            <footer className="footer">
-                <div className="footer-content">
-                    <p className="footer-logo">NidoTeso</p>
-                    <p className="footer-copyright">© 2025 NidoTeso Centro de Conservación. Todos los derechos reservados.</p>
-                </div>
-            </footer>
+            <Footer />
         </div>
     );
 }

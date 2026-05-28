@@ -84,7 +84,7 @@ export default function LandingPage() {
             </div>
 
             <div style={s.purposeImgWrap}>
-              <img src="/ojo.png" alt="Ojo de ave" style={s.purposeImg} />
+              <img src="/images/ojo.png" alt="Ojo de ave" style={s.purposeImg} />
               <div style={s.purposeCaption}>
                 "La observación es el primer paso hacia la conservación."
               </div>

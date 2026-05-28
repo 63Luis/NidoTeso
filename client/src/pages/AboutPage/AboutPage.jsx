@@ -83,39 +83,6 @@ function AboutPage() {
                     </div>
                 </section>
 
-                {/* Metodología Científica */}
-                <section className="section metodologia">
-                    <div className="container">
-                        <h2 className="section-title centered">Metodología Científica</h2>
-                        <div className="cards-grid">
-                            <div className="card">
-                                <span className="card-icon material-symbols-outlined">groups</span>
-                                <h3 className="card-title">Ciencia Ciudadana</h3>
-                                <p className="card-text">
-                                    Empoderamos a la comunidad para recolectar datos en tiempo real mediante nuestra
-                                    plataforma móvil.
-                                </p>
-                            </div>
-                            <div className="card">
-                                <span className="card-icon material-symbols-outlined">verified</span>
-                                <h3 className="card-title">Validación Experta</h3>
-                                <p className="card-text">
-                                    Cada registro es revisado por ornitólogos profesionales para garantizar la
-                                    integridad taxonómica.
-                                </p>
-                            </div>
-                            <div className="card">
-                                <span className="card-icon material-symbols-outlined">analytics</span>
-                                <h3 className="card-title">Monitoreo Abierto</h3>
-                                <p className="card-text">
-                                    Los datos generados se comparten con bases de datos globales de biodiversidad como
-                                    eBird.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
                 {/* El Equipo de Desarrollo */}
                 <section className="section">
                     <div className="container">

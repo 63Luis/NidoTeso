@@ -28,6 +28,7 @@
   --spacing-lg: 24px;
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
+  --border-radius-sm: 8px;
   --border-radius-md: 12px;
   --border-radius-lg: 16px;
   --border-radius-xl: 24px;
@@ -37,65 +38,95 @@
   --transition: all 0.3s ease;
 }
 
+html, body {
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
 body {
   font-family: 'Manrope', sans-serif;
-  background-color: var(--background);
   color: var(--on-surface);
 }
 
 .conservation-page {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .conservation-main {
-  padding-top: 0;
+  flex: 1;
   min-height: calc(100vh - 80px);
 }
 
 .conservation-container {
-  max-width: 1200px;
+  max-width: 1900px;
   margin: 0 auto;
   padding: var(--spacing-lg);
 }
 
 /* ═══════════════════════════════════════
-   HERO SECTION
+   HERO SECTION - PANTALLA COMPLETA
 ═══════════════════════════════════════ */
 .hero-section {
   position: relative;
-  border-radius: var(--border-radius-xl);
   overflow: hidden;
-  height: 340px;
+  min-height: 400px;
+  height: auto;
   display: flex;
   align-items: center;
   margin-bottom: var(--spacing-2xl);
   box-shadow: var(--shadow-sm);
 }
 
+@media (min-width: 1200px) {
+  .hero-section {
+    min-height: 460px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .hero-section {
+    min-height: 520px;
+  }
+}
+
 .hero-bg {
   position: absolute;
-  inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1444927714506-8492d94b4e3d?w=1400&q=85');
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://images.unsplash.com/photo-1444927714506-8492d94b4e3d?w=1600&q=90');
   background-size: cover;
-  background-position: center;
+  background-position: center 30%;
+  background-repeat: no-repeat;
 }
 
 .hero-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(252, 249, 242, 0.95) 0%, rgba(252, 249, 242, 0.8) 50%, transparent 100%);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg,
+  rgba(252, 249, 242, 0.96) 0%,
+  rgba(252, 249, 242, 0.85) 40%,
+  rgba(252, 249, 242, 0.6) 70%,
+  transparent 100%);
 }
 
 .hero-content {
   position: relative;
   z-index: 10;
-  padding: 0 var(--spacing-xl);
-  max-width: 600px;
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  max-width: 650px;
+  width: 100%;
 }
 
 .hero-eyebrow {
   font-weight: 700;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   display: block;
@@ -105,7 +136,7 @@ body {
 
 .hero-title {
   font-family: 'Newsreader', serif;
-  font-size: 48px;
+  font-size: 52px;
   font-weight: 700;
   color: var(--primary);
   margin-bottom: var(--spacing-md);
@@ -118,8 +149,53 @@ body {
   line-height: 1.6;
 }
 
+/* Responsive hero */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 320px;
+  }
+
+  .hero-content {
+    padding: var(--spacing-xl) var(--spacing-md);
+    max-width: 100%;
+  }
+
+  .hero-overlay {
+    background: linear-gradient(90deg,
+    rgba(252, 249, 242, 0.96) 0%,
+    rgba(252, 249, 242, 0.9) 60%,
+    rgba(252, 249, 242, 0.8) 100%);
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .hero-description {
+    font-size: 14px;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    min-height: 280px;
+  }
+
+  .hero-title {
+    font-size: 24px;
+  }
+
+  .hero-description {
+    font-size: 12px;
+  }
+}
+
 /* ═══════════════════════════════════════
-   SECCIÓN DE GUÍAS
+   SECCIÓN DE GUÍAS PRINCIPALES
 ═══════════════════════════════════════ */
 .guides-section {
   margin-bottom: var(--spacing-2xl);
@@ -166,7 +242,7 @@ body {
 }
 
 .guide-card-image {
-  height: 160px;
+  height: 180px;
   overflow: hidden;
 }
 
@@ -250,7 +326,8 @@ body {
   transition: transform 0.2s;
 }
 
-.guide-card:hover .arrow-icon {
+.guide-card:hover .arrow-icon,
+.mini-guide-card:hover .arrow-icon {
   transform: translateX(4px);
 }
 
@@ -317,7 +394,7 @@ body {
   width: 32px;
   height: 32px;
   background: var(--surface);
-  border-radius: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -429,6 +506,7 @@ body {
   gap: var(--spacing-lg);
 }
 
+/* Iniciativa Campus Amigable */
 .initiative-card {
   background: var(--primary);
   border-radius: var(--border-radius-xl);
@@ -589,7 +667,7 @@ body {
   border-top: 1px solid var(--border);
 }
 
-/* Más guías */
+/* Más Guías de Conservación (grid de 2 columnas) */
 .more-guides-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -693,6 +771,7 @@ body {
   gap: var(--spacing-lg);
 }
 
+/* Voluntariado */
 .volunteer-section {
   background: transparent;
 }
@@ -797,6 +876,7 @@ body {
   color: var(--background);
 }
 
+/* Newsletter */
 .newsletter-card {
   background: var(--surface-soft);
   border-radius: var(--border-radius-lg);
@@ -917,7 +997,7 @@ body {
 }
 
 /* ═══════════════════════════════════════
-   FAB BUTTON
+   FAB BUTTON (Floating Action Button)
 ═══════════════════════════════════════ */
 .fab-button {
   position: fixed;
@@ -951,6 +1031,7 @@ body {
   padding: 48px 24px;
   border-top: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.5);
+  margin-top: auto;
 }
 
 .footer-content {
@@ -974,15 +1055,19 @@ body {
 }
 
 /* ═══════════════════════════════════════
-   RESPONSIVE
+   RESPONSIVE DESIGN
 ═══════════════════════════════════════ */
+
+/* Tablets (1024px y menos) */
 @media (max-width: 1024px) {
   .guides-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
   }
 
   .migration-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
   }
 
   .actions-grid {
@@ -992,36 +1077,27 @@ body {
 
   .two-column-layout {
     grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
   }
 
   .tips-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
+/* Móviles (768px y menos) */
 @media (max-width: 768px) {
   .conservation-container {
     padding: var(--spacing-md);
   }
 
-  .hero-section {
-    height: 280px;
-  }
-
-  .hero-title {
-    font-size: 32px;
-  }
-
-  .hero-description {
-    font-size: 14px;
-  }
-
-  .hero-content {
-    padding: 0 var(--spacing-md);
-  }
-
   .guides-grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .guide-card-image {
+    height: 180px;
   }
 
   .migration-grid {
@@ -1036,20 +1112,68 @@ body {
     padding: var(--spacing-lg);
   }
 
+  .migration-actions {
+    padding: var(--spacing-md);
+  }
+
+  .initiative-card {
+    padding: var(--spacing-lg);
+  }
+
   .initiative-title {
     font-size: 22px;
+  }
+
+  .initiative-description {
+    font-size: 13px;
+  }
+
+  .initiative-tags {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .initiative-tag {
+    width: fit-content;
+  }
+
+  .tips-card {
+    padding: var(--spacing-lg);
   }
 
   .tips-title {
     font-size: 20px;
   }
 
+  .tips-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+
   .more-guides-grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-md);
   }
 
   .volunteer-title {
     font-size: 20px;
+  }
+
+  .volunteer-item {
+    padding: var(--spacing-md);
+  }
+
+  .newsletter-card {
+    padding: var(--spacing-lg);
+  }
+
+  .status-chips {
+    gap: var(--spacing-sm);
+  }
+
+  .status-chip {
+    font-size: 9px;
+    padding: 4px 12px;
   }
 
   .fab-button {
@@ -1059,4 +1183,84 @@ body {
     height: 48px;
     font-size: 20px;
   }
+
+  .footer {
+    padding: 32px 16px;
+  }
+
+  .footer-logo {
+    font-size: 18px;
+  }
+}
+
+/* Móviles pequeños (480px y menos) */
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 24px;
+  }
+
+  .section-subtitle {
+    font-size: 12px;
+  }
+
+  .guide-card-title {
+    font-size: 18px;
+  }
+
+  .guide-step {
+    font-size: 12px;
+  }
+
+  .migration-title {
+    font-size: 20px;
+  }
+
+  .tips-title {
+    font-size: 18px;
+  }
+
+  .tip-text {
+    font-size: 11px;
+  }
+
+  .mini-guide-title {
+    font-size: 14px;
+  }
+
+  .volunteer-title {
+    font-size: 18px;
+  }
+
+  .volunteer-item-title {
+    font-size: 14px;
+  }
+
+  .newsletter-title {
+    font-size: 18px;
+  }
+}
+
+/* Hover effects para elementos interactivos */
+.guide-card,
+.mini-guide-card,
+.volunteer-item,
+.initiative-tag,
+.volunteer-btn,
+.newsletter-btn,
+.fab-button {
+  cursor: pointer;
+}
+
+/* Animación suave para el scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Estilos para la regla del pulgar en el artículo */
+.rule-thumb {
+  background: var(--surface-soft);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  margin: var(--spacing-md) 0;
+  border-left: 3px solid var(--primary);
 }
